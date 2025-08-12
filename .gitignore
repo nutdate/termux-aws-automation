@@ -1,0 +1,5 @@
+env.sh
+*.pem
+*.zip
+aws-reports/
+backup_*.zip
