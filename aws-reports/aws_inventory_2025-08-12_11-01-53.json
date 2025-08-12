@@ -1,0 +1,260 @@
+{
+  "ec2": [],
+  "s3": {
+    "Buckets": [
+      {
+        "Name": "my-sample-bucket-1751800245",
+        "CreationDate": "2025-07-06T20:50:07.000Z"
+      }
+    ],
+    "Owner": {
+      "DisplayName": "dynusena",
+      "ID": "2e9a69bc7d7074a865001342eeda34c83884c9e2ec6140b533d43c7aed92ef74"
+    },
+    "Prefix": null
+  },
+  "rds": {
+    "DBInstances": []
+  },
+  "lambda": {
+    "Functions": [
+      {
+        "FunctionName": "MyMultiAPI_analyze",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_analyze",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 309,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-07T19:15:17.335+0000",
+        "CodeSha256": "Zcahacqj80hrQZnEAc9Rx9FTPDz2BdoLIVMCtYyOXMs=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "cb9a6d57-494c-4db3-8451-c349a403f8ad",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_analyze"
+        }
+      },
+      {
+        "FunctionName": "MyMultiAPI_upload",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_upload",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 368,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-14T11:02:04.000+0000",
+        "CodeSha256": "yBXTwX2btQM5AkdKQ2VOAjdVFjbpvY2CV0eipAYoCu8=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "ca20554a-da3e-40af-9195-2acf462b7129",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_upload"
+        }
+      },
+      {
+        "FunctionName": "MyMultiAPI_auth",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_auth",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 307,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-07T19:15:19.651+0000",
+        "CodeSha256": "GB961uSfQUcB7WLH1JcZKpKDRopf+hTuNuptzNAyniM=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "fe58eab5-a825-4302-a810-a08eaeafce95",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_auth"
+        }
+      },
+      {
+        "FunctionName": "MyMultiAPI_run-script",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_run-script",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 312,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-07T19:15:21.929+0000",
+        "CodeSha256": "38IHFZZSxBueOTg7IbZRe8EaypCSdLabWJqiAhI8lKA=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "5a67431e-cca0-4f22-b04b-b286d31d9672",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_run-script"
+        }
+      },
+      {
+        "FunctionName": "MyMultiAPI_webhook",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_webhook",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 310,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-07T19:15:28.851+0000",
+        "CodeSha256": "QdB0C98IOxx5EdHWyNUw2QIxMu1rQYiBo4HvbfEsW0Q=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "a3a81a2d-ae8c-483f-97bf-6134528c4dd4",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_webhook"
+        }
+      },
+      {
+        "FunctionName": "MyMultiAPI_users",
+        "FunctionArn": "arn:aws:lambda:ap-southeast-1:511027370789:function:MyMultiAPI_users",
+        "Runtime": "python3.12",
+        "Role": "arn:aws:iam::511027370789:role/MyLambdaExecutionRole",
+        "Handler": "lambda_function.lambda_handler",
+        "CodeSize": 307,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2025-07-07T19:15:26.511+0000",
+        "CodeSha256": "FnHu9N0eSr1IN4JqJLwgP2bNVD7oT+yhIRuq6Z5iudc=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "07959eab-8fcc-49b7-bc95-ebe8cd20d3c2",
+        "PackageType": "Zip",
+        "Architectures": [
+          "x86_64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/MyMultiAPI_users"
+        }
+      }
+    ]
+  },
+  "iam": {
+    "Users": [
+      {
+        "Path": "/",
+        "UserName": "fulladmin",
+        "UserId": "AIDAXN6423MSTKIEBJPKM",
+        "Arn": "arn:aws:iam::511027370789:user/fulladmin",
+        "CreateDate": "2025-07-08T12:11:00Z"
+      },
+      {
+        "Path": "/",
+        "UserName": "myuser",
+        "UserId": "AIDAXN6423MSZXBI4UNRB",
+        "Arn": "arn:aws:iam::511027370789:user/myuser",
+        "CreateDate": "2025-07-06T09:55:21Z"
+      },
+      {
+        "Path": "/",
+        "UserName": "new-user",
+        "UserId": "AIDAXN6423MSYXDMBLRJ3",
+        "Arn": "arn:aws:iam::511027370789:user/new-user",
+        "CreateDate": "2025-07-29T22:58:56Z"
+      },
+      {
+        "Path": "/",
+        "UserName": "termux-admin",
+        "UserId": "AIDAXN6423MSQZOOG63EO",
+        "Arn": "arn:aws:iam::511027370789:user/termux-admin",
+        "CreateDate": "2025-08-02T18:16:16Z"
+      },
+      {
+        "Path": "/",
+        "UserName": "termux-user",
+        "UserId": "AIDAXN6423MSUEZ2K2YR5",
+        "Arn": "arn:aws:iam::511027370789:user/termux-user",
+        "CreateDate": "2025-07-07T19:28:57Z"
+      }
+    ]
+  }
+}
