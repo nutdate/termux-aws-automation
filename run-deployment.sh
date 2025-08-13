@@ -1,60 +1,75 @@
 #!/bin/bash
-# สคริปต์หลักที่ "ฉลาด" สำหรับการ Deploy CloudFormation Stack
+set +e  # อย่าหยุดถ้ามี error
 
+MAX_RETRIES=3
 STACK_NAME="MyHighSpeedStack"
-TEMPLATE_FILE="my-aws-stack.yml"
 REGION="ap-southeast-1"
 
-# --- ข้อมูลที่ต้องกำหนด ---
-KEY_PAIR="my-main-git-key"
-HOSTED_ZONE_ID="Z099282910M32TRYMG9Z8"
-DOMAIN_NAME="nutdata.net"
+echo "ℹ️ กำลังค้นหาข้อมูล AWS อัตโนมัติ..."
 
-echo "--- เริ่มกระบวนการ Deploy สคริปต์ ---"
+# ดึง KeyPair แรก
+KEY_PAIR=$(aws ec2 describe-key-pairs \
+    --region $REGION \
+    --query 'KeyPairs[0].KeyName' \
+    --output text 2>/dev/null)
 
-# 1. ตรวจสอบสถานะของ Stack เก่า
-echo "1. กำลังตรวจสอบ Stack เก่าที่ชื่อ '$STACK_NAME'..."
-STACK_STATUS=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --region $REGION --query "Stacks[0].StackStatus" --output text 2>/dev/null)
+if [ "$KEY_PAIR" == "None" ] || [ -z "$KEY_PAIR" ]; then
+    echo "❌ ไม่พบ KeyPair ใน region $REGION กรุณาสร้างก่อน"
+    exit 1
+fi
 
-if [ $? -eq 0 ]; then
-  # ถ้าเจอ Stack
-  echo "   -> พบ Stack เก่าอยู่ในสถานะ: $STACK_STATUS"
-  if [[ "$STACK_STATUS" == "ROLLBACK_COMPLETE" || "$STACK_STATUS" == "CREATE_FAILED" || "$STACK_STATUS" == "UPDATE_ROLLBACK_COMPLETE" ]]; then
-    read -p "   -> Stack นี้อยู่ในสถานะที่พัง ต้องการลบทิ้งก่อนหรือไม่? (y/n): " choice
-    if [[ "$choice" == "y" || "$choice" == "Y" ]]; then
-      echo "   -> กำลังลบ Stack '$STACK_NAME'..."
-      aws cloudformation delete-stack --stack-name $STACK_NAME --region $REGION
-      echo "   -> กำลังรอให้ Stack ลบเสร็จสมบูรณ์ (อาจใช้เวลา 2-3 นาที)..."
-      aws cloudformation wait stack-delete-complete --stack-name $STACK_NAME --region $REGION
-      echo "   -> ลบ Stack เก่าเรียบร้อยแล้ว"
+# ดึง Hosted Zone ID และ Domain
+HOSTED_ZONE_ID=$(aws route53 list-hosted-zones \
+    --query 'HostedZones[0].Id' \
+    --output text 2>/dev/null | sed 's|/hostedzone/||')
+
+DOMAIN_NAME=$(aws route53 list-hosted-zones \
+    --query 'HostedZones[0].Name' \
+    --output text 2>/dev/null | sed 's/\.$//')
+
+if [ "$HOSTED_ZONE_ID" == "None" ] || [ -z "$HOSTED_ZONE_ID" ]; then
+    echo "❌ ไม่พบ Hosted Zone ใน Route53 กรุณาสร้างก่อน"
+    exit 1
+fi
+
+echo "✅ ใช้ KeyPair: $KEY_PAIR"
+echo "✅ ใช้ Domain: $DOMAIN_NAME"
+echo "✅ ใช้ HostedZoneId: $HOSTED_ZONE_ID"
+echo "-----------------------------------------"
+
+# เริ่ม deploy
+for attempt in $(seq 1 $MAX_RETRIES); do
+    echo "🚀 [รอบที่ $attempt] เริ่ม Deploy Stack..."
+
+    aws cloudformation deploy \
+        --template-file my-aws-stack.yml \
+        --stack-name $STACK_NAME \
+        --capabilities CAPABILITY_NAMED_IAM \
+        --region $REGION \
+        --parameter-overrides \
+            KeyPairName=$KEY_PAIR \
+            DomainName=$DOMAIN_NAME \
+            HostedZoneId=$HOSTED_ZONE_ID
+
+    if [ $? -eq 0 ]; then
+        echo "✅ Deploy สำเร็จ"
+        break
     else
-      echo "   -> ยกเลิกการ Deploy เนื่องจากผู้ใช้ไม่ต้องการลบ Stack ที่ค้างอยู่"
-      exit 1
+        echo "❌ Deploy ล้มเหลว (รอบที่ $attempt)"
+        aws cloudformation describe-stack-events \
+            --stack-name $STACK_NAME \
+            --region $REGION \
+            --query 'StackEvents[0:5].[Timestamp,ResourceStatus,LogicalResourceId,ResourceStatusReason]' \
+            --output table
+
+        if [ $attempt -lt $MAX_RETRIES ]; then
+            echo "🔄 กำลังลบ Stack ที่พัง และจะลองใหม่..."
+            aws cloudformation delete-stack --stack-name $STACK_NAME --region $REGION
+            aws cloudformation wait stack-delete-complete --stack-name $STACK_NAME --region $REGION
+        else
+            echo "💥 ลองครบ $MAX_RETRIES รอบแล้ว ยังไม่สำเร็จ"
+        fi
     fi
-  fi
-else
-  echo "   -> ไม่พบ Stack เก่า ทางสะดวก"
-fi
+done
 
-# 2. เริ่มการ Deploy
-echo ""
-echo "2. กำลังเริ่ม Deploy ระบบใหม่..."
-aws cloudformation deploy \
-  --template-file $TEMPLATE_FILE \
-  --stack-name $STACK_NAME \
-  --capabilities CAPABILITY_IAM \
-  --region $REGION \
-  --parameter-overrides \
-    KeyPairName=$KEY_PAIR \
-    HostedZoneId=$HOSTED_ZONE_ID \
-    DomainName=$DOMAIN_NAME
-
-if [ $? -eq 0 ]; then
-  echo ""
-  echo "✅ Deploy สำเร็จ!"
-  echo "--- กำลังแสดงผลลัพธ์ ---"
-  aws cloudformation describe-stacks --stack-name $STACK_NAME --region $REGION --query "Stacks[0].Outputs"
-else
-  echo ""
-  echo "❌ Deploy ล้มเหลว กรุณาตรวจสอบข้อผิดพลาด"
-fi
+echo "🎯 ทำงานขั้นตอนต่อไป..."

@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+IMAGE_ID="ami-08d17f4183e481a35"
+INSTANCE_TYPE="t2.micro"
+KEY_NAME="MyEC2Key"
+SECURITY_GROUP_ID="sg-0a9200140505b96d4"
+SUBNET_ID="subnet-09df73b4da999ada1"
+
+echo "IMAGE_ID=$IMAGE_ID"
+
+INSTANCE_ID=$(aws ec2 run-instances \
+  --image-id "$IMAGE_ID" \
+  --count 1 \
+  --instance-type "$INSTANCE_TYPE" \
+  --key-name "$KEY_NAME" \
+  --security-group-ids "$SECURITY_GROUP_ID" \
+  --subnet-id "$SUBNET_ID" \
+  --query "Instances[0].InstanceId" --output text)

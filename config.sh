@@ -1,0 +1,10 @@
+#!/bin/bash
+IMAGE_ID="ami-08d17f4183e481a35"
+INSTANCE_TYPE="t2.micro"
+KEY_NAME="MyEC2Key"
+SECURITY_GROUP_ID="sg-0a9200140505b96d4"
+SUBNET_ID="subnet-09df73b4da999ada1"
+ALLOCATION_ID="eipalloc-0a0657932d960ed26"
+DOMAIN_NAME="aws-ec2.ddnsgeek.com"
+HOSTED_ZONE_NAME="ddnsgeek.com"
+VPC_ID="vpc-0005f26bdc173a550"
